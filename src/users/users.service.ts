@@ -4,6 +4,7 @@ import { DrizzleService } from 'src/database/drizzle.service';
 import { uuidv7 } from 'uuidv7';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { eq } from 'drizzle-orm';
 
 @Injectable()
 export class UsersService {
@@ -15,15 +16,20 @@ export class UsersService {
       .returning({ createdUser: databaseSchema.users.id });
   }
 
-  async findAll() {
-    const users = await this.drizzleService.db
-      .select()
-      .from(databaseSchema.users);
-    return users;
+  findAll() {
+    return this.drizzleService.db.select().from(databaseSchema.users);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findByEmail(email: string) {
+    return this.drizzleService.db.query.users.findFirst({
+      where: eq(databaseSchema.users.email, email),
+    });
+  }
+
+  findOne(id: string) {
+    return this.drizzleService.db.query.users.findFirst({
+      where: eq(databaseSchema.users.id, id),
+    });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
