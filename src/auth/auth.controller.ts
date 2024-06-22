@@ -1,7 +1,15 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { RegisterUserDto } from './dto/register-user.dto';
-import { UsersService } from 'src/users/users.service';
+import {
+  Body,
+  Controller,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import * as bcrypt from 'bcryptjs';
+import { UsersService } from 'src/users/users.service';
+import { RegisterRestaurantDto } from './dto/register-restaurant.dto';
+import { RegisterUserDto } from './dto/register-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -12,6 +20,22 @@ export class AuthController {
     return this.usersService.create({
       ...registerUserDto,
       password: hashedPassword,
+    });
+  }
+  @Post('/register/restaurant')
+  @UseInterceptors(FileInterceptor('photo'))
+  async registerRestaurant(
+    @Body() registerRestaurantDto: RegisterRestaurantDto,
+    @UploadedFile() photo: Express.Multer.File,
+  ) {
+    const hashedPassword = await bcrypt.hash(
+      registerRestaurantDto.password,
+      10,
+    );
+    return this.usersService.create({
+      ...registerRestaurantDto,
+      password: hashedPassword,
+      photo: photo.path,
     });
   }
 }

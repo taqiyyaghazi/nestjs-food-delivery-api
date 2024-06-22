@@ -46,6 +46,7 @@ docker.env
 # temp directory
 .temp
 .tmp
+uploads
 
 # Runtime data
 pids
