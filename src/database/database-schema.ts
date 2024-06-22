@@ -12,6 +12,8 @@ export const users = pgTable('users', {
   latlong: varchar('latlong'),
   license_plate: varchar('license_plate'),
   photo: varchar('photo'),
+  role: varchar('role'),
+  remember_token: varchar('remember_token'),
   created_at: timestamp('created_at').defaultNow(),
   updated_at: timestamp('updated_at').$onUpdate(() => new Date()),
 });

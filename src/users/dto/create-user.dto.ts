@@ -7,4 +7,6 @@ export class CreateUserDto {
   restaurant_address?: string;
   latlong?: string;
   photo?: string;
+  remember_token?: string;
+  role: string;
 }

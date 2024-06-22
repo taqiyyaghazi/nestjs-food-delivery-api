@@ -32,8 +32,11 @@ export class UsersService {
     });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(id: string, updateUserDto: UpdateUserDto) {
+    return this.drizzleService.db
+      .update(databaseSchema.users)
+      .set(updateUserDto)
+      .where(eq(databaseSchema.users.id, id));
   }
 
   remove(id: number) {

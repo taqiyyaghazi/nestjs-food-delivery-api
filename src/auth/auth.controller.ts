@@ -3,18 +3,20 @@ import {
   Body,
   Controller,
   NotFoundException,
+  Param,
   Post,
+  Request,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as bcrypt from 'bcryptjs';
 import { UsersService } from 'src/users/users.service';
-import { RegisterRestaurantDto } from './dto/register-restaurant.dto';
-import { RegisterUserDto } from './dto/register-user.dto';
-import { RegisterDriverDto } from './dto/register-driver.dto';
+import { AuthGuard } from './auth.guard';
 import { LoginDto } from './dto/login.dto';
-import { JwtService } from '@nestjs/jwt';
+import { RegisterDto } from './dto/register.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -22,42 +24,19 @@ export class AuthController {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
   ) {}
-  @Post('/register/user')
-  async registerUser(@Body() registerUserDto: RegisterUserDto) {
-    const hashedPassword = await bcrypt.hash(registerUserDto.password, 10);
-    return this.usersService.create({
-      ...registerUserDto,
-      password: hashedPassword,
-    });
-  }
-  @Post('/register/restaurant')
+  @Post('/register/:role')
   @UseInterceptors(FileInterceptor('photo'))
-  async registerRestaurant(
-    @Body() registerRestaurantDto: RegisterRestaurantDto,
+  async register(
+    @Param('role') role: string,
+    @Body() registerDto: RegisterDto,
     @UploadedFile() photo: Express.Multer.File,
   ) {
-    const hashedPassword = await bcrypt.hash(
-      registerRestaurantDto.password,
-      10,
-    );
+    const hashedPassword = await bcrypt.hash(registerDto.password, 10);
     return this.usersService.create({
-      ...registerRestaurantDto,
+      ...registerDto,
       password: hashedPassword,
-      photo: photo.path,
-    });
-  }
-
-  @Post('/register/driver')
-  @UseInterceptors(FileInterceptor('photo'))
-  async registerDriver(
-    @Body() registerDriverDto: RegisterDriverDto,
-    @UploadedFile() photo: Express.Multer.File,
-  ) {
-    const hashedPassword = await bcrypt.hash(registerDriverDto.password, 10);
-    return this.usersService.create({
-      ...registerDriverDto,
-      password: hashedPassword,
-      photo: photo.path,
+      role,
+      photo: photo?.path,
     });
   }
 
@@ -77,8 +56,23 @@ export class AuthController {
 
     const payload = {
       id: user.id,
+      role: user.role,
     };
 
-    return { accessToken: await this.jwtService.signAsync(payload) };
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(payload),
+      this.jwtService.signAsync(payload),
+    ]);
+
+    await this.usersService.update(user.id, { remember_token: refreshToken });
+
+    return { accessToken, refreshToken };
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/logout')
+  async logout(@Request() req) {
+    await this.usersService.update(req.user.id, { remember_token: null });
+    return;
   }
 }
