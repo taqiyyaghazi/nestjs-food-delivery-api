@@ -24,14 +24,15 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard)
-  @Get()
+  @Get('/profile')
   find(@Request() req) {
     return this.usersService.findOne(req.user.id);
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  @UseGuards(AuthGuard)
+  @Patch()
+  async update(@Body() updateUserDto: UpdateUserDto, @Request() req) {
+    await this.usersService.update(req.user.id, updateUserDto);
+    return;
   }
 
   @Delete(':id')
