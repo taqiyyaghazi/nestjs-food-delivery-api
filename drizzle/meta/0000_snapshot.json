@@ -1,5 +1,5 @@
 {
-  "id": "8503f6ce-44e7-4d37-843e-81cc9b3019fa",
+  "id": "3e60c946-57aa-4d4c-bffb-20fde3b0916f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -10,22 +10,21 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "varchar",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
         "name": {
           "name": "name",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "email": {
           "name": "email",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "email_verified_at": {
           "name": "email_verified_at",
@@ -37,10 +36,40 @@
           "name": "password",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "phone": {
           "name": "phone",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "restaurant_name": {
+          "name": "restaurant_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "restaurant_address": {
+          "name": "restaurant_address",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "latlong": {
+          "name": "latlong",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "license_plate": {
+          "name": "license_plate",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "photo": {
+          "name": "photo",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false

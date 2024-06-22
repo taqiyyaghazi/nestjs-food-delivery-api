@@ -10,6 +10,7 @@ export const users = pgTable('users', {
   restaurant_name: varchar('restaurant_name'),
   restaurant_address: varchar('restaurant_address'),
   latlong: varchar('latlong'),
+  license_plate: varchar('license_plate'),
   photo: varchar('photo'),
   created_at: timestamp('created_at').defaultNow(),
   updated_at: timestamp('updated_at').$onUpdate(() => new Date()),

@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1719034754683,
-      "tag": "0000_quiet_angel",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1719035409505,
-      "tag": "0001_aromatic_smasher",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1719035476495,
-      "tag": "0002_little_landau",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1719038599447,
-      "tag": "0003_mean_sebastian_shaw",
+      "when": 1719072651925,
+      "tag": "0000_create-users-table",
       "breakpoints": true
     }
   ]
