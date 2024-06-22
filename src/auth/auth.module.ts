@@ -4,6 +4,8 @@ import { AuthController } from './auth.controller';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from './constants';
 
 @Module({
   imports: [
@@ -21,6 +23,11 @@ import { extname } from 'path';
           cb(null, `${randomName}${extname(file.originalname)}`);
         },
       }),
+    }),
+    JwtModule.register({
+      global: true,
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '1d' },
     }),
   ],
   providers: [],
