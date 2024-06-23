@@ -4,6 +4,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { DrizzleService } from 'src/database/drizzle.service';
 import { databaseSchema } from 'src/database/database-schema';
 import { uuidv7 } from 'uuidv7';
+import { eq } from 'drizzle-orm';
 
 @Injectable()
 export class ProductsService {
@@ -23,8 +24,12 @@ export class ProductsService {
     return `This action returns a #${id} product`;
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  update(id: string, updateProductDto: UpdateProductDto) {
+    return this.drizzleService.db
+      .update(databaseSchema.products)
+      .set(updateProductDto)
+      .where(eq(databaseSchema.products.id, id))
+      .returning({ updatedProduct: databaseSchema.products.id });
   }
 
   remove(id: number) {
