@@ -16,8 +16,20 @@ export class UsersService {
       .returning({ createdUser: databaseSchema.users.id });
   }
 
-  findAll() {
-    return this.drizzleService.db.select().from(databaseSchema.users);
+  async findAll({ role }: { role?: string }) {
+    try {
+      let query = this.drizzleService.db
+        .select()
+        .from(databaseSchema.users)
+        .$dynamic();
+      if (role) {
+        query = query.where(eq(databaseSchema.users.role, role));
+      }
+      return query;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
   }
 
   findByEmail(email: string) {
