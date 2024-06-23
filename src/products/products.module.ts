@@ -1,18 +1,15 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from 'src/users/users.module';
-import { AuthController } from './auth.controller';
+import { ProductsService } from './products.service';
+import { ProductsController } from './products.controller';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from './constants';
 
 @Module({
   imports: [
-    UsersModule,
     MulterModule.register({
       storage: diskStorage({
-        destination: './uploads/users',
+        destination: './uploads/products',
         filename: (req, file, cb) => {
           // Generating a 32 random chars long string
           const randomName = Array(32)
@@ -24,13 +21,8 @@ import { jwtConstants } from './constants';
         },
       }),
     }),
-    JwtModule.register({
-      global: true,
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '1d' },
-    }),
   ],
-  providers: [],
-  controllers: [AuthController],
+  controllers: [ProductsController],
+  providers: [ProductsService],
 })
-export class AuthModule {}
+export class ProductsModule {}

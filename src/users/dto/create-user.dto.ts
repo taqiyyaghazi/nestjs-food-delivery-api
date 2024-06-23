@@ -3,10 +3,10 @@ export class CreateUserDto {
   phone: string;
   email: string;
   password: string;
-  restaurant_name?: string;
-  restaurant_address?: string;
+  restaurantName?: string;
+  restaurantAddress?: string;
   latlong?: string;
   photo?: string;
-  remember_token?: string;
+  rememberToken?: string;
   role: string;
 }

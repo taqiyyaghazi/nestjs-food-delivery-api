@@ -3,9 +3,9 @@ export class RegisterDto {
   email: string;
   password: string;
   phone: string;
-  restaurant_name: string;
-  restaurant_address: string;
+  restaurantName: string;
+  restaurantAddress: string;
   latlong: string;
-  license_plate: string;
+  licensePlate: string;
   photo: string;
 }

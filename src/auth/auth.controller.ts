@@ -64,7 +64,7 @@ export class AuthController {
       this.jwtService.signAsync(payload),
     ]);
 
-    await this.usersService.update(user.id, { remember_token: refreshToken });
+    await this.usersService.update(user.id, { rememberToken: refreshToken });
 
     return { accessToken, refreshToken };
   }
@@ -72,7 +72,7 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Post('/logout')
   async logout(@Request() req) {
-    await this.usersService.update(req.user.id, { remember_token: null });
+    await this.usersService.update(req.user.id, { rememberToken: null });
     return;
   }
 }
