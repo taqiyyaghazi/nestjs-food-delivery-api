@@ -32,7 +32,10 @@ export class ProductsService {
       .returning({ updatedProduct: databaseSchema.products.id });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  remove(id: string) {
+    return this.drizzleService.db
+      .delete(databaseSchema.products)
+      .where(eq(databaseSchema.products.id, id))
+      .returning({ deletedProduct: databaseSchema.products.id });
   }
 }

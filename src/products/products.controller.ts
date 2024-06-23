@@ -52,8 +52,9 @@ export class ProductsController {
     return this.productsService.update(id, updateProductDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.productsService.remove(+id);
+    return this.productsService.remove(id);
   }
 }
